@@ -2,16 +2,23 @@ package com.ruthm.rmanriquezfoodapp.Screens
 
 import ads_mobile_sdk.h5
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import com.ruthm.rmanriquezfoodapp.Models.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -95,7 +103,7 @@ fun HomeScreen(userName: String) {
             Text(
                 "Hola, $userName",
                 fontSize = 25.sp,
-                fontWeight = FontWeight.Normal
+                fontWeight = FontWeight.SemiBold
             )
 
             Spacer(modifier = Modifier.width(160.dp))
@@ -112,9 +120,9 @@ fun HomeScreen(userName: String) {
             Spacer(modifier = Modifier.height(25.dp))
 
             //Sección categorias
-            Text("Nuestras categorías",
+            Text("Nuestras categorias",
                 fontSize = 25.sp,
-                fontWeight = FontWeight.Normal)
+                fontWeight = FontWeight.SemiBold)
 
 
             LazyRow {
@@ -130,7 +138,7 @@ fun HomeScreen(userName: String) {
 
         Text("Busca los mejores restaurantes",
             fontSize = 25.sp,
-            fontWeight = FontWeight.Normal)
+            fontWeight = FontWeight.SemiBold)
 
         LazyRow {
             items(restaurantes) { Restaurant ->
@@ -139,6 +147,14 @@ fun HomeScreen(userName: String) {
 
         }
 
+        //Sección comidas
+        Spacer(modifier = Modifier.height(15.dp))
+
+        Text("Nuestras mejores comidas",
+            fontSize = 25.sp,
+            fontWeight = FontWeight.SemiBold)
+
+        FoodScreen()
 
         }
     }
@@ -160,7 +176,7 @@ fun CategoryItem(category: Category) {
                 .clip(CircleShape)
         )
         Text(category.name,
-            fontSize = 18.sp,
+            fontSize = 14.sp,
             fontWeight = FontWeight.Light
         )
     }
@@ -181,12 +197,92 @@ fun RestaurantItem(restaurant: Restaurant){
                 .clip(CircleShape)
         )
         Text(restaurant.name,
-            fontSize = 18.sp,
+            fontSize = 14.sp,
             fontWeight = FontWeight.Light)
     }
 }
 
 
+
+@Composable
+fun FoodItem(food: Food) {
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Transparent
+        )
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+            ) {
+                Image(
+                    painter = rememberAsyncImagePainter(food.image),
+                    contentDescription = food.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(6.dp)
+                        .background(
+                            color = Color.Red,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                ) {
+                    Text(
+                        text = "$${food.price}",
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
+                Text(
+                    text = food.name,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                Text("⭐ ${food.rating}", style = MaterialTheme.typography.bodyMedium)
+            }
+        }
+    }
+}
+
+// Grid con 2 por fila
+@Composable
+fun FoodGrid(comida: List<Food>) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(comida) { food ->
+            FoodItem(food = food)
+        }
+    }
+}
+
+@Composable
+fun FoodScreen() {
+    FoodGrid(comida)
+}
 
 
 
