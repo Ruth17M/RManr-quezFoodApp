@@ -42,8 +42,8 @@ val  categorias = listOf(
 )
 
 val restaurantes = listOf(
-    Restaurant("Burger King", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Burger_King_logo_%281999%E2%80%932020%29.svg/1012px-Burger_King_logo_%281999%E2%80%932020%29.svg.png"),
-    Restaurant("McDonald's", "https://upload.wikimedia.org/wikipedia/commons/0/05/McDonald%27s_square_2020.svg"),
+    Restaurant("Burger King", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ--1MJsy7_DWpEDHBVdc8L7Vn-neqF-M_MyA&s"),
+    Restaurant("McDonald's", "https://1000marcas.net/wp-content/uploads/2019/11/McDonalds-logo.png"),
     Restaurant("KFC", "https://media-cdn.tripadvisor.com/media/photo-s/2e/7f/f4/6d/kfc.jpg"),
     Restaurant("Starbucks", "https://puertalavictoria.mx/wp-content/uploads/2024/01/starbucks.jpg")
 )
@@ -123,6 +123,23 @@ fun HomeScreen(userName: String) {
                 }
 
             }
+
+        //seccion restaurantes
+        Spacer(modifier = Modifier.height(15.dp))
+
+
+        Text("Busca los mejores restaurantes",
+            fontSize = 25.sp,
+            fontWeight = FontWeight.Normal)
+
+        LazyRow {
+            items(restaurantes) { Restaurant ->
+                RestaurantItem(Restaurant)
+            }
+
+        }
+
+
         }
     }
 
@@ -149,6 +166,25 @@ fun CategoryItem(category: Category) {
     }
 }
 
+
+@Composable
+fun RestaurantItem(restaurant: Restaurant){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(8.dp)
+    ) {
+        Image(
+            painter = rememberAsyncImagePainter(restaurant.image),
+            contentDescription = restaurant.name,
+            modifier = Modifier
+                .size(120.dp)
+                .clip(CircleShape)
+        )
+        Text(restaurant.name,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Light)
+    }
+}
 
 
 
