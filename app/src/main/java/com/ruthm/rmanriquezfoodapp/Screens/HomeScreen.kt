@@ -33,11 +33,14 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.ruthm.rmanriquezfoodapp.R
 import com.ruthm.rmanriquezfoodapp.ui.theme.Orange
 
 
@@ -65,12 +68,31 @@ val comida = listOf(
     Food("Caramel Macchiato",3.7, 86.9,"https://www.groundstobrew.com/wp-content/uploads/2022/01/starbucks-caramel-macchiato.jpg")
     )
 
+val Roboto = FontFamily(
+    Font(R.font.roboto_regular, FontWeight.Normal),
+    Font(R.font.roboto_black, FontWeight.Bold),
+    Font(R.font.roboto_light, FontWeight.Light)
+)
 
+val AppTypography = Typography(
+    bodyLarge = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    ),
+    titleLarge = TextStyle(
+        fontFamily = Roboto,
+        fontWeight = FontWeight.Bold,
+        fontSize = 25.sp
+    )
+)
 
 
 @Composable
 fun FoodApp(){
-       MaterialTheme {
+       MaterialTheme(
+           typography = AppTypography
+       ) {
             HomeScreen(userName = "Ruth")
        }
 }
@@ -103,7 +125,8 @@ fun HomeScreen(userName: String) {
             Text(
                 "Hola, $userName",
                 fontSize = 25.sp,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.bodyLarge
             )
 
             Spacer(modifier = Modifier.width(160.dp))
@@ -122,7 +145,8 @@ fun HomeScreen(userName: String) {
             //Sección categorias
             Text("Nuestras categorias",
                 fontSize = 25.sp,
-                fontWeight = FontWeight.SemiBold)
+                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.bodyLarge)
 
 
             LazyRow {
@@ -138,7 +162,8 @@ fun HomeScreen(userName: String) {
 
         Text("Busca los mejores restaurantes",
             fontSize = 25.sp,
-            fontWeight = FontWeight.SemiBold)
+            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.bodyLarge)
 
         LazyRow {
             items(restaurantes) { Restaurant ->
@@ -177,7 +202,8 @@ fun CategoryItem(category: Category) {
         )
         Text(category.name,
             fontSize = 14.sp,
-            fontWeight = FontWeight.Light
+            fontWeight = FontWeight.Light,
+            style = MaterialTheme.typography.labelMedium
         )
     }
 }
@@ -198,7 +224,9 @@ fun RestaurantItem(restaurant: Restaurant){
         )
         Text(restaurant.name,
             fontSize = 14.sp,
-            fontWeight = FontWeight.Light)
+            fontWeight = FontWeight.Light,
+            style = MaterialTheme.typography.labelMedium)
+
     }
 }
 
@@ -263,7 +291,6 @@ fun FoodItem(food: Food) {
     }
 }
 
-// Grid con 2 por fila
 @Composable
 fun FoodGrid(comida: List<Food>) {
     LazyVerticalGrid(
